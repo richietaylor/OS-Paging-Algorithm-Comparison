@@ -5,9 +5,40 @@ from random import randint
 import sys
 
 
+'''
+First in first out algorithim 
+    Parameters:
+        size (int) : Frame size
+        pages (int[]) : List of pages
+    Returns:
+        faults (int) : Number of faults
+'''
+
+
 def FIFO(size, pages):
     # keep track of page faults
     faults = 0
+    frames = []
+
+    # populate array
+    for x in range(size):
+
+        if pages[x] not in frames:
+            faults += 1
+
+        frames = [pages[x]] + frames
+
+    # loop through the rest of the array
+    for x in range(size, len(pages)):
+        # print(pages[x])
+
+        # if the next int is not in the memory, activate a page fault
+        if pages[x] not in frames:
+            faults += 1
+            # shift elements to the right by 1
+            frames = [pages[x]] + frames
+            frames.pop()
+
     return faults
 
 
