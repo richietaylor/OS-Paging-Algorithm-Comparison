@@ -21,35 +21,16 @@ def FIFO(size, pages):
     faults = 0
     frames = []
 
-    for x in pages:
+    for x in range(len(pages)):
         if pages[x] not in frames:
             faults += 1
-
-
-"""
-def FIFO(size, pages):
-    # page frame
-    frames = []
-    # num page faults
-    faults = 0
-
-    # populates the frames with pages
-    for x in range(size):
-        if pages[x] not in frames:
-            faults += 1
-        frames = [pages[x]] + frames
-
-    # loop through the rest of the array
-    for x in range(size, len(pages)):
-        # if the next "page" is not in the "memory", activate a page fault
-        if pages[x] not in frames:
-            faults += 1
-            # this shifts the elements by one unit to the right
-            frames = [pages[x]] + frames
-            frames.pop()
-    # returns number of faults
+            if len(frames) < size:
+                frames.append(pages[x])
+            else:
+                frames.append(pages[x])
+                frames.pop(0)
     return faults
-"""
+
 
 '''
 Least Recentely used algorithim 
@@ -67,7 +48,7 @@ def LRU(size, pages):
     faults = 0
     frames = []  # will I need this?
 
-    for x in pages:
+    for x in range(len(pages)):
         faults += 1
 
     return faults
