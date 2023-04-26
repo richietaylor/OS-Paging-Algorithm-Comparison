@@ -4,7 +4,7 @@
 from random import randint, seed
 import sys
 
-seed(420)
+# seed(69)
 
 
 '''
@@ -18,15 +18,21 @@ First in first out algorithim
 
 
 def FIFO(size, pages):
+    # keeps track of page faults
     faults = 0
+    # keeps track of pages in memory
     frames = []
 
+    # loop through all pages in reference string
     for x in range(len(pages)):
+        # if our current page is not in "memory", add a fault and continue
         if pages[x] not in frames:
             faults += 1
+            # This is to account for the first few pages
             if len(frames) < size:
                 frames.append(pages[x])
             else:
+                # swap out victim for new
                 frames.append(pages[x])
                 frames.pop(0)
     return faults
@@ -45,18 +51,25 @@ Least Recentely used algorithim
 
 
 def LRU(size, pages):
+    # keeps track of page faults
     faults = 0
+    # keeps track of pages in memory
     frames = []
 
+# loop through all pages in reference string
     for x in range(len(pages)):
+        # if our current page is not in "memory", add a fault and continue
         if pages[x] not in frames:
             faults += 1
+            # This is to account for the first few pages
             if len(frames) < size:
                 frames.insert(0, pages[x])
             else:
+                # swap out victim for new, keep most recently used to front of stack
                 frames.insert(0, pages[x])
                 frames.pop(-1)
         else:
+            # move recently used to front of stack
             frames.pop(frames.index(pages[x]))
             frames.insert(0, pages[x])
 
@@ -78,7 +91,7 @@ Optimal page replacement algorithim
 def OPT(size, pages):
     #
     frames = []
-    # var keeps track of page faults
+    # faults keeps track of page faults
     faults = 0
 
     # loop through all pages
@@ -100,14 +113,14 @@ def OPT(size, pages):
 
                 for y in range(len(frames)):
                     if frames[y] in seek:
-                        # find indices of all future references of items in memory
-                        ind = seek.index(frames[y])
+                        # find indices (poisitions) of all future references of items in memory
+                        pos = seek.index(frames[y])
                     else:
                         # else set index to unreasonably high number so it will always be paged if it is referenced
-                        ind = 99999999999
+                        pos = 99999999999
                     # victim page = page referenced futherest into the future (or never referenced again)
-                    if ind > maximum:
-                        maximum = ind
+                    if pos > maximum:
+                        maximum = pos
                         victim = frames[y]
 
                 # remove victim page and add optimal page
@@ -124,7 +137,7 @@ def main():
     pageLength = int(sys.argv[1])
 
     # page size - can be manually set from 1 to 7
-    size = 3
+    size = 7
 
     # Random number generator -
     # generates a list of random ints from 0 to 9
