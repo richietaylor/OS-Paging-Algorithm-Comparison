@@ -21,7 +21,7 @@ def FIFO(size, pages):
     # num page faults
     faults = 0
 
-    # populate frames
+    # populates the frames with pages
     for x in range(size):
         if pages[x] not in frames:
             faults += 1
@@ -29,10 +29,10 @@ def FIFO(size, pages):
 
     # loop through the rest of the array
     for x in range(size, len(pages)):
-        # if the next int is not in the memory, activate a page fault
+        # if the next "page" is not in the "memory", activate a page fault
         if pages[x] not in frames:
             faults += 1
-            # shift elements to the right by 1
+            # this shifts the elements by one unit to the right
             frames = [pages[x]] + frames
             frames.pop()
 
@@ -52,29 +52,30 @@ Least Recentely used algorithim
 
 
 def LRU(size, pages):
-    # keep track of page faults
+
+    # this int keeps track of the page faults
     faults = 0
+
     frames = []
-    # parallel stack of reference bits
+    # this array (or stack) sits parallel to the main "stack"
     refBits = []
 
-    # counter to keep track of which frame to page next
-    counter = 0
-
-    # loop through the pages
+    # count - keeps track of victim frame
+    count = 0
+    # iterate throuhg page list
     for x in range(len(pages)):
 
-        # reset counter to keep it keeping track of which page to check for replacement next
-        if counter > size-1:
-            counter = 0
+        # reseting count - keeps it looking for victim page
+        if count > size-1:
+            count = 0
 
-        # if page in frames, find its refernece bit and set it to 1, since the page has just been referenced
+        # if page in frame stack set refbit to one to let alg know it is receently used
         if pages[x] in frames:
             pos = frames.index(pages[x])
             refBits[pos] = 1
 
         else:
-            # account for the first few pages as they fill up the frame
+            # fill up tge frame list for the few instancesto fill frames
             if len(frames) < size:
                 frames.append(pages[x])
                 refBits.append(0)
@@ -83,31 +84,31 @@ def LRU(size, pages):
             replaced = False
             while replaced == False:
 
-                # reset counter to keep it keeping track of which page to check for replacement next
-                if counter > size-1:
-                    counter = 0
+                # reset count to keep it keeping track of which page to check for replacement next
+                if count > size-1:
+                    count = 0
 
                 # if the potential victim page has a reference bit of 1, set it to zero and move on
-                if refBits[counter] == 1:
-                    refBits[counter] = 0
-                    counter += 1
+                if refBits[count] == 1:
+                    refBits[count] = 0
+                    count += 1
 
-                    # reset counter to keep it keeping track of which page to check for replacement next
-                    if counter > size-1:
-                        counter = 0
+                    # reset count to keep it keeping track of which page to check for replacement next
+                    if count > size-1:
+                        count = 0
 
                 else:
                     # remove the victim page
                     faults += 1
-                    frames.pop(counter)
-                    refBits.pop(counter)
+                    frames.pop(count)
+                    refBits.pop(count)
 
                     # add new page into memory
-                    frames = frames[:counter] + [pages[x]] + frames[counter:]
-                    refBits = refBits[:counter] + [0] + refBits[counter:]
+                    frames = frames[:count] + [pages[x]] + frames[count:]
+                    refBits = refBits[:count] + [0] + refBits[count:]
                     replaced = True
 
-                    counter += 1
+                    count += 1
 
     return faults
 
@@ -175,11 +176,12 @@ def main():
     pageLength = int(sys.argv[1])
 
     # page size - can be manually set from 1 to 7
-    size = 7
+    size = 4
 
     # Random number generator -
     # generates a list of random ints from 0 to 9
     pages = []
+    print("Reference String: ")
     for x in range(pageLength):
         pages.append(randint(0, 9))
     print(pages[:])
