@@ -35,7 +35,7 @@ def FIFO(size, pages):
             # this shifts the elements by one unit to the right
             frames = [pages[x]] + frames
             frames.pop()
-
+    # returns number of faults
     return faults
 
 
@@ -103,13 +103,13 @@ def LRU(size, pages):
                     frames.pop(count)
                     refBits.pop(count)
 
-                    # add new page into memory
+                    # add a new page into "memory"
                     frames = frames[:count] + [pages[x]] + frames[count:]
                     refBits = refBits[:count] + [0] + refBits[count:]
                     replaced = True
 
                     count += 1
-
+    # returns number of faults
     return faults
 
 
@@ -126,47 +126,45 @@ Optimal page replacement algorithim
 
 
 def OPT(size, pages):
-    # keep track of page faults
-    faults = 0
+    #
     frames = []
+    # var keeps track of page faults
+    faults = 0
 
-    # loop through the pages
+    # loop through all pages
     for x in range(len(pages)):
         if pages[x] not in frames:
-            # page fault since the page is not in memory
+            # page fault if frame not in memory
             faults += 1
 
-            # this is to account for the first few pages
+            # first few pages coming in will not be memory
             if len(frames) < size:
                 frames.append(pages[x])
             else:
-                # create a subset of all future referenced pages
+                # creates a subset of all pages referenced in the future
                 seek = pages[x:len(pages)]
-
-                # the int used futherest in the future
-                maxx = -1
-                # the index of the frame to be paged
+                # the int referenced the futhurest in the future
+                maximum = -1
+                # index of victim page
                 victim = -1
 
                 for y in range(len(frames)):
                     if frames[y] in seek:
                         # find indices of all future references of items in memory
                         ind = seek.index(frames[y])
-
                     else:
-                        # set index (ind) ridicoulsy high so if an int is never used again, it will always be paged
-                        ind = 10000000000
-
-                    # find the page that will be used the latest, or not at all
-                    if ind > maxx:
-                        maxx = ind
+                        # else set index to unreasonably high number so it will always be paged if it is referenced
+                        ind = 99999999999
+                    # victim page = page referenced futherest into the future (or never referenced again)
+                    if ind > maximum:
+                        maximum = ind
                         victim = frames[y]
 
-                # page the victim frame out the stack, add recently referenced int
-                vicpos = frames.index(victim)
-                frames.pop(vicpos)
+                # remove victim page and add optimal page
+                victimPos = frames.index(victim)
+                frames.pop(victimPos)
                 frames.append(pages[x])
-
+    # returns number of faults
     return faults
 
 
@@ -181,6 +179,7 @@ def main():
     # Random number generator -
     # generates a list of random ints from 0 to 9
     pages = []
+    print("Frame Size: ", size)
     print("Reference String: ")
     for x in range(pageLength):
         pages.append(randint(0, 9))
