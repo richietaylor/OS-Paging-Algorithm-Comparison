@@ -46,74 +46,22 @@ Least Recentely used algorithim
 
 def LRU(size, pages):
     faults = 0
-    frames = []  # will I need this?
-
-    for x in range(len(pages)):
-        faults += 1
-
-    return faults
-
-
-'''
-def LRU(size, pages):
-
-    # this int keeps track of the page faults
-    faults = 0
     frames = []
-    # this array (or stack) sits parallel to the main "stack"
-    refBits = []
 
-    # count - keeps track of victim frame
-    count = 0
-    # iterate throuhg page list
     for x in range(len(pages)):
-        # reseting count - keeps it looking for victim page
-        if count > size-1:
-            count = 0
-
-        # if page in frame stack set refbit to one to let alg know it is receently used
-        if pages[x] in frames:
-            pos = frames.index(pages[x])
-            refBits[pos] = 1
-
-        else:
-            # fill up tge frame list for the few instancesto fill frames
+        if pages[x] not in frames:
+            faults += 1
             if len(frames) < size:
-                frames.append(pages[x])
-                refBits.append(0)
+                frames.insert(0, pages[x])
+            else:
+                frames.insert(0, pages[x])
+                frames.pop(-1)
+        else:
+            frames.pop(frames.index(pages[x]))
+            frames.insert(0, pages[x])
 
-            # keep going through the reference bits, until you find a victim page and replace its
-            replaced = False
-            while replaced == False:
-
-                # reset count to keep it keeping track of which page to check for replacement next
-                if count > size-1:
-                    count = 0
-
-                # if the potential victim page has a reference bit of 1, set it to zero and move on
-                if refBits[count] == 1:
-                    refBits[count] = 0
-                    count += 1
-
-                    # reset count to keep it keeping track of which page to check for replacement next
-                    if count > size-1:
-                        count = 0
-
-                else:
-                    # remove the victim page
-                    faults += 1
-                    frames.pop(count)
-                    refBits.pop(count)
-
-                    # add a new page into "memory"
-                    frames = frames[:count] + [pages[x]] + frames[count:]
-                    refBits = refBits[:count] + [0] + refBits[count:]
-                    replaced = True
-
-                    count += 1
-    # returns number of faults
     return faults
-'''
+
 
 ''' 
 Optimal page replacement algorithim 
