@@ -15,8 +15,6 @@ First in first out algorithim
     Returns:
         faults (int) : Number of faults
 '''
-
-
 def FIFO(size, pages):
     # keeps track of page faults
     faults = 0
@@ -48,8 +46,6 @@ Least Recentely used algorithim
         faults (int) : Number of faults
 
 '''
-
-
 def LRU(size, pages):
     # keeps track of page faults
     faults = 0
@@ -86,8 +82,6 @@ Optimal page replacement algorithim
         faults (int) : Number of faults
 
 '''
-
-
 def OPT(size, pages):
     #
     frames = []
