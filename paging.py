@@ -18,6 +18,16 @@ First in first out algorithim
 
 
 def FIFO(size, pages):
+    faults = 0
+    frames = []
+
+    for x in pages:
+        if pages[x] not in frames:
+            faults += 1
+
+
+"""
+def FIFO(size, pages):
     # page frame
     frames = []
     # num page faults
@@ -39,7 +49,7 @@ def FIFO(size, pages):
             frames.pop()
     # returns number of faults
     return faults
-
+"""
 
 '''
 Least Recentely used algorithim 
