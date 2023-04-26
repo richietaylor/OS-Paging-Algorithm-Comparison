@@ -1,8 +1,10 @@
 # TYLRIC007 - Richard Taylor
 # OS Assignment 1 - Paging Techniques
 
-from random import randint
+from random import randint, seed
 import sys
+
+seed(420)
 
 
 '''
@@ -52,10 +54,20 @@ Least Recentely used algorithim
 
 
 def LRU(size, pages):
+    faults = 0
+    frames = []  # will I need this?
+
+    for x in pages:
+        faults += 1
+
+    return faults
+
+
+'''
+def LRU(size, pages):
 
     # this int keeps track of the page faults
     faults = 0
-
     frames = []
     # this array (or stack) sits parallel to the main "stack"
     refBits = []
@@ -64,7 +76,6 @@ def LRU(size, pages):
     count = 0
     # iterate throuhg page list
     for x in range(len(pages)):
-
         # reseting count - keeps it looking for victim page
         if count > size-1:
             count = 0
@@ -111,7 +122,7 @@ def LRU(size, pages):
                     count += 1
     # returns number of faults
     return faults
-
+'''
 
 ''' 
 Optimal page replacement algorithim 
@@ -174,7 +185,7 @@ def main():
     pageLength = int(sys.argv[1])
 
     # page size - can be manually set from 1 to 7
-    size = 4
+    size = 3
 
     # Random number generator -
     # generates a list of random ints from 0 to 9
