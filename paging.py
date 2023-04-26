@@ -136,7 +136,7 @@ def main():
     # command line argument sets the number of pages to be referenced in sequence
     pageLength = int(sys.argv[1])
 
-    # page size - can be manually set from 1 to 7
+    # page size - user can manually set this from 1 to 7
     size = 7
 
     # Random number generator -
